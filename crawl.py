@@ -1,8 +1,7 @@
 import sys
-import urllib3
+import requests
 
 args = sys.argv
-http = urllib3.PoolManager()
 
 if len(args)<3:
 	sys.exit("Missing parameters: python3 crawl.py [API URL] [WORDLIST]")
@@ -12,9 +11,7 @@ wlfile = args[2]
 
 i = 0
 with open(wlfile,'r') as file:
-	for word in file:
-		requestUrl = url+'/'+word
-#		print(requestUrl)
-		r = http.request('GET',requestUrl)
-#		print(r.status_code)
-		print(r.status)
+	readFile = file.read().splitlines()
+	for word in readFile:
+		r = requests.get(url+'/'+word)
+		print(r.status_code)
