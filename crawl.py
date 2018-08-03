@@ -1,23 +1,32 @@
 import sys
 import requests
 import threading
-import math
 from multiprocessing import Pool
+from functools import partial
 
 args = sys.argv
 
 if len(args)<3:
-	sys.exit("Use: python3 crawl.py [http://API_URL] [WORDLIST]")
+	sys.exit("Use: python3 crawl.py [http://API_URL] [WORDLIST] [?THREADS]")
 
+#ARGS
 url = args[1]
 wlfile = args[2]
-wordlist = []
-nthreads = 50
+if len(args)>3:
+	nthreads = int(args[3])
+else:
+	nthreads = 50
 
-def doRequest(requestUrl):
+#GLOBAL VARIABLES
+wordlist = []
+
+def doRequestGET(requestUrl):
+	if counter%100 == 0:
+		print(counter)
+
 	r = requests.get(requestUrl)	
-	if r.status_code == 200 or r.status_code == 401:
-		print('Gotcha: '+requestUrl)
+	if r.status_code == 200 or r.status_code == 401 or r.status_code == 400:
+		print('GET: '+requestUrl)
 
 def readFile():
 	with open(wlfile,'r') as file:
@@ -29,9 +38,10 @@ def readFile():
 def main():
 	readFile()
 	if(len(wordlist)>0):
-		print('This could take a while...')
+		print('This could take a while...\n')		
+		#Do GET Requests
 		with Pool(nthreads) as p:
-			p.map(doRequest,wordlist)	
+			p.map(func,wordlist)	
 	else:
 		print('No words in wordlist!')
 
