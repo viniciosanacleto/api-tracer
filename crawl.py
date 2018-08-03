@@ -25,6 +25,21 @@ def doRequestGET(requestUrl):
 	if r.status_code == 200 or r.status_code == 401 or r.status_code == 400:
 		print('GET: '+requestUrl)
 
+def doRequestPOST(requestUrl):	
+	r = requests.post(requestUrl)	
+	if r.status_code == 200 or r.status_code == 401 or r.status_code == 400:
+		print('POST: '+requestUrl)
+
+def doRequestPUT(requestUrl):	
+	r = requests.put(requestUrl)	
+	if r.status_code == 200 or r.status_code == 401 or r.status_code == 400:
+		print('PUT: '+requestUrl)
+
+def doRequestDELETE(requestUrl):	
+	r = requests.delete(requestUrl)	
+	if r.status_code == 200 or r.status_code == 401 or r.status_code == 400:
+		print('DELETE: '+requestUrl)
+
 def readFile():
 	with open(wlfile,'r') as file:
 		readFile = file.read().splitlines()
@@ -38,7 +53,11 @@ def main():
 		print('This could take a while...\n')		
 		#Do GET Requests
 		with Pool(nthreads) as p:
-			p.map(func,wordlist)	
+			p.map(doRequestGET,wordlist)
+			p.map(doRequestPOST,wordlist)
+			p.map(doRequestPUT,wordlist)
+			p.map(doRequestDELETE,wordlist)
+
 	else:
 		print('No words in wordlist!')
 
