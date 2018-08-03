@@ -20,10 +20,7 @@ else:
 #GLOBAL VARIABLES
 wordlist = []
 
-def doRequestGET(requestUrl):
-	if counter%100 == 0:
-		print(counter)
-
+def doRequestGET(requestUrl):	
 	r = requests.get(requestUrl)	
 	if r.status_code == 200 or r.status_code == 401 or r.status_code == 400:
 		print('GET: '+requestUrl)
