@@ -3,22 +3,28 @@ import requests
 import threading
 from multiprocessing import Pool
 from functools import partial
+from args import solveArgs
 
-args = sys.argv
-
-if len(args)<3:
-	sys.exit("Use: python3 crawl.py [http://API_URL] [WORDLIST] [?THREADS]")
-
+##################
+#GLOBAL VARIABLES
+##################
+wordlist = []
+##################
 #ARGS
+##################
+args = sys.argv
+if len(args)<3:
+	print("Use: python3 crawl.py [http://API_URL] [WORDLIST] [?OPTIONS]")
+	sys.exit()
+
 url = args[1]
 wlfile = args[2]
-if len(args)>3:
-	nthreads = int(args[3])
-else:
-	nthreads = 50
 
-#GLOBAL VARIABLES
-wordlist = []
+args = solveArgs(args)
+
+def configByArgs():
+	if('threads' not in args):
+		args['threads'] = 50
 
 def doRequestGET(requestUrl):	
 	r = requests.get(requestUrl)	
@@ -48,11 +54,12 @@ def readFile():
 
 
 def main():
+	configByArgs()
 	readFile()
 	if(len(wordlist)>0):
 		print('This could take a while...\n')		
 		#Do GET Requests
-		with Pool(nthreads) as p:
+		with Pool(args['threads']) as p:
 			p.map(doRequestGET,wordlist)
 			p.map(doRequestPOST,wordlist)
 			p.map(doRequestPUT,wordlist)
