@@ -18,4 +18,4 @@ WRONG
 
 **OPTIONS** as the name are optional parameters like:
 
- - **-t [n_threads]** *for choose the number of simultaneous requests to the server*
+ - **-t [n_threads]** *for choose the number of simultaneous requests to the server (default 50)*
