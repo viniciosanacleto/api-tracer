@@ -2,6 +2,7 @@
 
     python3 crawl.py [API_URL] [WORDLIST] [?OPTIONS]
 **API_URL** is the address to the target API. Attention, it's necessary to use `http://`or `https://`.
+
 RIGHT
 
     python3 crawl.py http://mypourtarget.com
